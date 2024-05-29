@@ -44,7 +44,7 @@ const App = () => {
           setMost(i)
         }
       }
-      console.log(justVotes, highestVoted, most)
+      console.log(justVotes, highestVoted,)
     }}/>
     <Button text="next anecdote" onClick={() => setSelected(randomizer(anecdotes.length))}/>
     <div>
