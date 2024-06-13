@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import PersonForm from './components/PersonForm'
+import SearchFilter from './components/SearchFilter'
+import DisplayPeople from './components/DisplayPeople'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -7,20 +10,27 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3, invisible: false },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4, invisible: false }
   ])
-  const [newName, setNewName] = useState('') 
-  const [newNumber, setNewNumber] = useState('')
+  const [formData, setFormData] = useState ({
+    name: "",
+    number: ""
+  })
+  const formDataHandler = (event) => {
+    const { name, value } = event.target;
+    setFormData( {...formData, [name]: value})
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
+    console.log(event.target)
     const peopleArr = [...persons]
     const newPerson = {
-      name: newName,
-      number: newNumber,
+      name: formData.name,
+      number: formData.number,
       id: (peopleArr.length + 1),
       invisible: false
     }
-    if ((peopleArr.some((x) => x.name === newName)) === true) {
-      alert(`${newName} is already added to phonebook`)
+    if ((peopleArr.some((x) => x.name === formData.name)) === true) {
+      alert(`${formData.name} is already added to phonebook`)
     } else {
       peopleArr.push(newPerson)
       setPersons(peopleArr)
@@ -35,36 +45,15 @@ const App = () => {
       !x.name.match(regex) ? x.invisible = true : x.invisible = false
     })
     setPersons(current)
-    console.log(persons)
   }
-  const nameHandler = (event) => setNewName(event.target.value)
-  const numberHandler = (event) => setNewNumber(event.target.value)
-
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with <input type="text" onChange={isThisYourPerson}/></div>
-      <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={(event) => 
-            setNewName(event.target.value)
-            }/>
-        </div>
-        <div>number: <input value={newNumber} onChange={(event) => setNewNumber(event.target.value)}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <div>
-      <h2>Numbers</h2>
-      {persons.map((x) => {
-        if(x.invisible === false) {
-          return <ul key={x.id}> {x.name} {x.number}</ul>
-        }
-      })}
-      </div>
+      <SearchFilter onChange={isThisYourPerson}/>
+      <h3>Add a new</h3>
+      <PersonForm onSubmit={addPerson} onChange={formDataHandler} formData={formData}/>
+      <DisplayPeople persons={persons}/>
     </div>
   )
 }
