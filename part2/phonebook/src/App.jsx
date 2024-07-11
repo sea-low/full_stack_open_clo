@@ -2,20 +2,25 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import SearchFilter from './components/SearchFilter'
 import DisplayPeople from './components/DisplayPeople'
-import axios from 'axios'
+import phoneService from '/services/phonebook.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
-  const hook = () => {
+  const loadPeople = () => {
     const people = []
-    axios
-      .get('http://localhost:3001/persons')
+    phoneService
+      .getAll()
       .then(response => {
-        response.data.map((x) => people.push(x))
-        console.log(people)
+        response.map((x) => {
+          x.invisible = false
+          people.push(x)
+        })
         setPersons(people)
       })
+  }
+
+  const hook = () => {
+    loadPeople()
   }
   useEffect(hook, [])
 
@@ -32,21 +37,47 @@ const App = () => {
     event.preventDefault()
     console.log(event.target)
     const peopleArr = [...persons]
+    const idParam = []
+    peopleArr.map((x) => idParam.push(x.id))
+    idParam.sort((a, b) => b - a)
+
     const newPerson = {
       name: formData.name,
       number: formData.number,
-      id: (peopleArr.length + 1),
+      id: (Number(idParam[0]) + 1).toString(),
       invisible: false
     }
     if ((peopleArr.some((x) => x.name === formData.name)) === true) {
-      alert(`${formData.name} is already added to phonebook`)
+      let indexToBeUpdated = peopleArr.findIndex((x) => x.name == formData.name)
+      if(window.confirm(`${formData.name} is already added to the phonebook, replace number with new one?`)) {
+        phoneService
+          .update(peopleArr[indexToBeUpdated], newPerson)
+          .then(response => {
+            loadPeople()
+          })
+      }
+      // alert(`${formData.name} is already added to phonebook`)
     } else {
-      peopleArr.push(newPerson)
-      setPersons(peopleArr)
+      phoneService
+        .create(newPerson)
+        .then(response => {
+          peopleArr.push(newPerson)
+          setPersons(peopleArr)
+        })
     }
   }
 
-  const isThisYourPerson = (event) => {
+  const deleteHandler = (person) => {
+    if(window.confirm(`Delete ${person.name}?`)) {
+      phoneService
+        .eliminate(person)
+        .then(response => {
+          loadPeople()
+        })
+    }
+  }
+
+  const lookingPeopleUpHandler = (event) => {
     const pattern = event.target.value
     const regex = new RegExp(pattern, "gi")
     const current = [...persons]
@@ -59,10 +90,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <SearchFilter onChange={isThisYourPerson}/>
+      <SearchFilter onChange={lookingPeopleUpHandler}/>
       <h3>Add a new</h3>
       <PersonForm onSubmit={addPerson} onChange={formDataHandler} formData={formData}/>
-      <DisplayPeople persons={persons}/>
+      <DisplayPeople persons={persons} deleteHandler={deleteHandler}/>
     </div>
   )
 }
