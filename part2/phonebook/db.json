@@ -21,6 +21,12 @@
       "id": "9",
       "name": "Ada LoveLace",
       "number": "42-134-222222"
+    },
+    {
+      "name": "clo",
+      "number": "3",
+      "id": "10",
+      "invisible": false
     }
   ]
 }

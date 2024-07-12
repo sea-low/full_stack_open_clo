@@ -3,9 +3,28 @@ import PersonForm from './components/PersonForm'
 import SearchFilter from './components/SearchFilter'
 import DisplayPeople from './components/DisplayPeople'
 import phoneService from '/services/phonebook.js'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  const [visible, setVisibility] = useState(false)
+  const [messageType, setType] = useState('')
+  const [messageContent, setMessageContent] = useState(``)
+
+  const Message = ({messageContent, visible, messageType}) => {
+    if (visible === false) {
+      return null
+    } else {
+      return (
+        <div className={messageType}>
+          <h3>
+            {messageContent}
+          </h3>
+        </div>
+      )
+    }
+    }
+
   const loadPeople = () => {
     const people = []
     phoneService
@@ -54,15 +73,37 @@ const App = () => {
           .update(peopleArr[indexToBeUpdated], newPerson)
           .then(response => {
             loadPeople()
+            setVisibility(true)
+            setType('success')
+            setMessageContent(`Updated ${peopleArr[indexToBeUpdated]}'s number`)
+            console.log(Message)
+          })
+          .then(response => {
+            setTimeout(() => {
+            setVisibility(false)
+            }, 5000)
+            console.log(messageContent)
           })
       }
-      // alert(`${formData.name} is already added to phonebook`)
+
     } else {
       phoneService
         .create(newPerson)
         .then(response => {
           peopleArr.push(newPerson)
           setPersons(peopleArr)
+        })
+        .then(response => {
+          setVisibility(true)
+          setType('success')
+          setMessageContent(`Added ${newPerson.name}`)
+          console.log(messageContent)
+        })
+        .then(response => {
+          setTimeout(() => {
+            setVisibility(false)
+          }, 5000)
+          console.log(messageContent)
         })
     }
   }
@@ -73,6 +114,18 @@ const App = () => {
         .eliminate(person)
         .then(response => {
           loadPeople()
+        })
+        .then(response => {
+          setVisibility(true)
+          setType('success')
+          setMessageContent(`Deleted ${person.name}`)
+          console.log(messageContent)
+        })
+        .then(response => {
+          setTimeout(() => {
+          setVisibility(false)
+          }, 5000)
+          console.log(messageContent)
         })
     }
   }
@@ -89,6 +142,7 @@ const App = () => {
 
   return (
     <div>
+      <Message visible={visible} className={messageType}>{messageContent}</Message>
       <h2>Phonebook</h2>
       <SearchFilter onChange={lookingPeopleUpHandler}/>
       <h3>Add a new</h3>
