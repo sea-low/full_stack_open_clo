@@ -7,19 +7,15 @@ import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [visible, setVisibility] = useState(false)
-  const [messageType, setType] = useState('')
-  const [messageContent, setMessageContent] = useState(``)
+  const [successMessage, setSuccessMessage] = useState(null)
 
-  const Message = ({messageContent, visible, messageType}) => {
-    if (visible === false) {
+  const Notification = ({message}) => {
+    if (message === null) {
       return null
     } else {
       return (
-        <div className={messageType}>
-          <h3>
-            {messageContent}
-          </h3>
+        <div className="success">
+            {message}
         </div>
       )
     }
@@ -72,17 +68,13 @@ const App = () => {
         phoneService
           .update(peopleArr[indexToBeUpdated], newPerson)
           .then(response => {
-            loadPeople()
-            setVisibility(true)
-            setType('success')
-            setMessageContent(`Updated ${peopleArr[indexToBeUpdated]}'s number`)
-            console.log(Message)
+            setSuccessMessage(`Updated ${peopleArr[indexToBeUpdated].name}'s number`)
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
           })
           .then(response => {
-            setTimeout(() => {
-            setVisibility(false)
-            }, 5000)
-            console.log(messageContent)
+            loadPeople()
           })
       }
 
@@ -94,16 +86,10 @@ const App = () => {
           setPersons(peopleArr)
         })
         .then(response => {
-          setVisibility(true)
-          setType('success')
-          setMessageContent(`Added ${newPerson.name}`)
-          console.log(messageContent)
-        })
-        .then(response => {
+          setSuccessMessage(`Added ${newPerson.name}`)
           setTimeout(() => {
-            setVisibility(false)
+            setSuccessMessage(null)
           }, 5000)
-          console.log(messageContent)
         })
     }
   }
@@ -116,16 +102,10 @@ const App = () => {
           loadPeople()
         })
         .then(response => {
-          setVisibility(true)
-          setType('success')
-          setMessageContent(`Deleted ${person.name}`)
-          console.log(messageContent)
-        })
-        .then(response => {
+          setSuccessMessage(`Deleted ${person.name}`)
           setTimeout(() => {
-          setVisibility(false)
+            setSuccessMessage(null)
           }, 5000)
-          console.log(messageContent)
         })
     }
   }
@@ -142,7 +122,7 @@ const App = () => {
 
   return (
     <div>
-      <Message visible={visible} className={messageType}>{messageContent}</Message>
+      <Notification message={successMessage}/>
       <h2>Phonebook</h2>
       <SearchFilter onChange={lookingPeopleUpHandler}/>
       <h3>Add a new</h3>
