@@ -7,14 +7,15 @@ import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [currentMessage, setCurrentMessage] = useState(null)
+  const [messageClass, setMessageClass] = useState("")
 
-  const Notification = ({message}) => {
+  const Notification = ({message, type}) => {
     if (message === null) {
       return null
     } else {
       return (
-        <div className="success">
+        <div className={type}>
             {message}
         </div>
       )
@@ -68,14 +69,24 @@ const App = () => {
         phoneService
           .update(peopleArr[indexToBeUpdated], newPerson)
           .then(response => {
-            setSuccessMessage(`Updated ${peopleArr[indexToBeUpdated].name}'s number`)
+            setCurrentMessage(`Updated ${peopleArr[indexToBeUpdated].name}'s number`)
+            setMessageClass("success")
             setTimeout(() => {
-              setSuccessMessage(null)
+              setCurrentMessage(null)
+              setMessageClass("")
             }, 5000)
-          })
-          .then(response => {
             loadPeople()
           })
+          .catch(error => {
+            setCurrentMessage(`Information of ${peopleArr[indexToBeUpdated].name} has already been removed from the server`)
+            setMessageClass("error")
+            setTimeout(() => {
+              setCurrentMessage(null)
+              setMessageClass("")
+            }, 5000)
+            loadPeople()
+          })
+
       }
 
     } else {
@@ -86,9 +97,11 @@ const App = () => {
           setPersons(peopleArr)
         })
         .then(response => {
-          setSuccessMessage(`Added ${newPerson.name}`)
+          setCurrentMessage(`Added ${newPerson.name}`)
+          setMessageClass("success")
           setTimeout(() => {
-            setSuccessMessage(null)
+            setCurrentMessage(null)
+            setMessageClass("")
           }, 5000)
         })
     }
@@ -102,9 +115,11 @@ const App = () => {
           loadPeople()
         })
         .then(response => {
-          setSuccessMessage(`Deleted ${person.name}`)
+          setCurrentMessage(`Deleted ${person.name}`)
+          setMessageClass("success")
           setTimeout(() => {
-            setSuccessMessage(null)
+            setMessageClass("")
+            setCurrentMessage(null)
           }, 5000)
         })
     }
@@ -122,7 +137,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={successMessage}/>
+      <Notification type={messageClass} message={currentMessage}/>
       <h2>Phonebook</h2>
       <SearchFilter onChange={lookingPeopleUpHandler}/>
       <h3>Add a new</h3>

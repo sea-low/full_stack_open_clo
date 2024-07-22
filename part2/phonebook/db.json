@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Mary Poppendiek",
-      "number": "12034",
+      "number": "123-12341-123",
       "id": "4",
       "invisible": false
     },
@@ -21,12 +21,6 @@
       "id": "9",
       "name": "Ada LoveLace",
       "number": "42-134-222222"
-    },
-    {
-      "name": "Chloe Prothro",
-      "number": "112341-24-141",
-      "id": "10",
-      "invisible": false
     }
   ]
 }
