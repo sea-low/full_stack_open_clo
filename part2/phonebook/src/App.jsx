@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import SearchFilter from './components/SearchFilter'
 import DisplayPeople from './components/DisplayPeople'
+import Notification from './components/Notification'
 import phoneService from '/services/phonebook.js'
 import './index.css'
 
@@ -9,18 +10,6 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [currentMessage, setCurrentMessage] = useState(null)
   const [messageClass, setMessageClass] = useState("")
-
-  const Notification = ({message, type}) => {
-    if (message === null) {
-      return null
-    } else {
-      return (
-        <div className={type}>
-            {message}
-        </div>
-      )
-    }
-    }
 
   const loadPeople = () => {
     const people = []
