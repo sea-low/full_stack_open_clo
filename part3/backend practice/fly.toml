@@ -1,0 +1,24 @@
+# fly.toml app configuration file generated for backend-practice-billowing-resonance-524 on 2024-08-06T12:44:37-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'backend-practice-billowing-resonance-524'
+primary_region = 'sjc'
+
+[build]
+[env]
+  PORT = "3000"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
