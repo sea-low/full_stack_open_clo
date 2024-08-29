@@ -42,15 +42,11 @@ const App = () => {
     event.preventDefault()
     console.log(event.target)
     const peopleArr = [...persons]
-    const idParam = []
-    peopleArr.map((x) => idParam.push(x.id))
-    idParam.sort((a, b) => b - a)
 
     const newPerson = {
       name: formData.name,
       number: formData.number,
-      id: (Number(idParam[0]) + 1).toString(),
-      invisible: false
+
     }
     if ((peopleArr.some((x) => x.name === formData.name)) === true) {
       let indexToBeUpdated = peopleArr.findIndex((x) => x.name == formData.name)
@@ -67,7 +63,7 @@ const App = () => {
             loadPeople()
           })
           .catch(error => {
-            setCurrentMessage(`Information of ${peopleArr[indexToBeUpdated].name} has already been removed from the server`)
+            setCurrentMessage(`${error.response.data.error}`)
             setMessageClass("error")
             setTimeout(() => {
               setCurrentMessage(null)
@@ -81,7 +77,7 @@ const App = () => {
     } else {
       phoneService
         .create(newPerson)
-        .then(response => {
+        .then(newPerson => {
           peopleArr.push(newPerson)
           setPersons(peopleArr)
         })
@@ -92,6 +88,16 @@ const App = () => {
             setCurrentMessage(null)
             setMessageClass("")
           }, 5000)
+          loadPeople()
+        }) .catch(error => {
+          setCurrentMessage(`${error.response.data.error}`)
+          setMessageClass("error")
+          setTimeout(() => {
+            setCurrentMessage(null)
+            setMessageClass("")
+          }, 5000)
+          console.log(`${error.response.data.error}`)
+          loadPeople()
         })
     }
   }
