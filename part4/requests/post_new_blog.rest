@@ -1,0 +1,94 @@
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Some Chick in a Theatre (it's all a dream)",
+    "author": "Clo Rissanpro",
+    "url": "https://riss.co",
+    "likes": 666
+}
+
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "The Butt and Nothing But",
+    "author": "Sir Mixalot",
+    "likes": 100
+}
+
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "69 Reasons to 69",
+    "author": "Sum Singlelady",
+    "url": "https://missigivings.shout",
+
+}
+
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "author": "Problem Child",
+    "url": "https://missigivings.shout",
+    "likes": 109
+}
+
+
+// associating user with blog posts:
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "25 Ways to annoy my husband",
+    "author": "His wife",
+    "url": "https://live-laugh-love.com",
+    "likes": 109,
+    "userId": "66e23f69b0f0cfdad55c1052"
+}
+
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "5 Ways to Ignore My Wife",
+    "author": "Her Husband",
+    "url": "https://live-laugh-love.com",
+    "likes": 109,
+    "userId": "66e23f6cb0f0cfdad55c1054"
+}
+
+###
+// Checking to see that populating random user works
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: Bearer donttellanyone
+
+{
+    "title": "How to Become a Multi-Billionaire By 2 years old",
+    "author": "Baby Trustfund",
+    "url": "https://i-earned-everthing-myself.com",
+    "likes": 109
+}
+###
+// posting blog with user
+
+
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+//authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNobG9lIiwiaWQiOiI2NmUyMzFlMDg2YWU2ZWQ2Y2ZmNWVkNjkiLCJpYXQiOjE3MjY5Nzc4MDUsImV4cCI6MTcyNjk4MTQwNX0.oZ4TdUGMBTCNKgAAzaPTovbmWnZNGIHWH7baKNvjifE
+
+{
+    "title": "5 Ways to Ignore My Wife",
+    "author": "Her Husband",
+    "url": "https://live-laugh-love.com",
+    "likes": 109,
+    "user": "66e231e086ae6ed6cff5ed69"
+}

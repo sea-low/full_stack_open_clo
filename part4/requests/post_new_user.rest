@@ -1,0 +1,53 @@
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Chloe",
+    "name": "CloCloClo",
+    "password": "asdf1234"
+}
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Roodie",
+    "name": "Rizzza",
+    "password": "asdf1234"
+}
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Waifu29",
+    "name": "Janica",
+    "password": "asdf1234"
+}
+
+###
+// verifying username > 2 char
+
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "12",
+    "name": "Kerol",
+    "password": "asdf1234"
+}
+
+###
+// verifying password > 2 char
+
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "123",
+    "name": "Twootsie",
+    "password": "as"
+}

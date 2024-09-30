@@ -1,0 +1,28 @@
+// username && password
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "Chloe",
+    "password": "asdf1234"
+}
+
+###
+// !username
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "Chlo",
+    "password": "asdf1234"
+}
+
+###
+// !passowrd
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "Chloe",
+    "password": "asdf123"
+}

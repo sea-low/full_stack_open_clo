@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/66dde779bd490a68b1405a9b HTTP/1.1
+content-type: application/json
+
+{
+    "title": "25 Ways to annoy my husband",
+    "author": "His wife",
+    "url": "https://live-laugh-love.com",
+    "likes": 1110
+}
